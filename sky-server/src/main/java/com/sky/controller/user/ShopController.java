@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 //因为类名重复会导致Bean名称冲突
 @RestController("userShopController")
-@RequestMapping("/admin/shop")
+@RequestMapping("/user/shop")
 @Api(tags = "店铺相关接口")
 @Slf4j
 public class ShopController {
