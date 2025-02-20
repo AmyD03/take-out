@@ -28,6 +28,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private SetmealMapper setmealMapper;
 
+    /**
+     * 添加购物车
+     * @param shoppingCartDTO
+     */
     public void addShoppingCart(ShoppingCartDTO shoppingCartDTO) {
         //判断当前添加到购物车的商品是否已经存在
         ShoppingCart shoppingCart = new ShoppingCart();
@@ -66,5 +70,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCart.setCreateTime(LocalDateTime.now());
             shoppingCartMapper.insert(shoppingCart);
         }
+    }
+
+    /**
+     * 查看购物车
+     * @return
+     */
+    public List<ShoppingCart> showShoppingCart() {
+        //获取当前用户的id
+        Long userId = BaseContext.getCurrentId();
+        ShoppingCart shoppingCart = ShoppingCart.builder()
+                .userId(userId)
+                .build();
+        List<ShoppingCart> list = shoppingCartMapper.list(shoppingCart);
+        return list;
     }
 }
