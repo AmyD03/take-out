@@ -33,4 +33,18 @@ public class AddressBookController {
         log.info("查询当前登录用户的所有地址信息：{}", list);
         return Result.success(list);
     }
+
+    /**
+     * 新增地址
+     * @param addressBook
+     * @return
+     */
+    @PostMapping
+    @ApiOperation("新增地址")
+    public Result save(@RequestBody AddressBook addressBook) {
+        addressBookService.save(addressBook);
+        return Result.success();
+    }
+
+
 }

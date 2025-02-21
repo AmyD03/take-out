@@ -12,4 +12,10 @@ public interface AddressBookService {
      * @return
      */
     List<AddressBook> list(AddressBook addressBook);
+
+    /**
+     * 新增地址
+     * @param addressBook
+     */
+    void save(AddressBook addressBook);
 }

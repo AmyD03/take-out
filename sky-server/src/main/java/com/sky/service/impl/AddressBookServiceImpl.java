@@ -24,4 +24,15 @@ public class AddressBookServiceImpl implements AddressBookService {
     public List<AddressBook> list(AddressBook addressBook){
         return addressBookMapper.list(addressBook);
     }
+
+    /**
+     * 新增地址
+     * @param addressBook
+     */
+    public void save(AddressBook addressBook){
+        addressBook.setUserId(BaseContext.getCurrentId());
+        //默认设置新地址为默认地址
+        addressBook.setIsDefault(0);
+        addressBookMapper.insert(addressBook);
+    }
 }
