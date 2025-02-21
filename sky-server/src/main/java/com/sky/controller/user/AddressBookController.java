@@ -30,7 +30,6 @@ public class AddressBookController {
         AddressBook addressBook = new AddressBook();
         addressBook.setUserId(BaseContext.getCurrentId());
         List<AddressBook> list = addressBookService.list(addressBook);
-        log.info("查询当前登录用户的所有地址信息：{}", list);
         return Result.success(list);
     }
 
@@ -81,5 +80,35 @@ public class AddressBookController {
     public Result deleteById(Long id) {
         addressBookService.deleteById(id);
         return Result.success();
+    }
+
+    /**
+     * 设置默认地址
+     *
+     * @param addressBook
+     * @return
+     */
+    @PutMapping("/default")
+    @ApiOperation("设置默认地址")
+    public Result setDefault(@RequestBody AddressBook addressBook) {
+        addressBookService.setDefault(addressBook);
+        return Result.success();
+    }
+
+    /**
+     * 查询默认地址
+     * @return
+     */
+    @GetMapping("default")
+    @ApiOperation("查询默认地址")
+    public Result getDefault() {
+        AddressBook addressBook = new AddressBook();
+        addressBook.setIsDefault(1);
+        addressBook.setUserId(BaseContext.getCurrentId());
+        List<AddressBook> list = addressBookService.list(addressBook);
+        if (list != null && list.size() == 1) {
+            return Result.success(list.get(0));
+        }
+        return Result.error("没有查询到默认地址");
     }
 }
