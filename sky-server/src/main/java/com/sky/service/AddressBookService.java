@@ -18,4 +18,17 @@ public interface AddressBookService {
      * @param addressBook
      */
     void save(AddressBook addressBook);
+
+    /**
+     * 根据id查询地址
+     * @param id
+     * @return
+     */
+    AddressBook getById(Long id);
+
+    /**
+     * 根据id修改地址
+     * @param addressBook
+     */
+    void update(AddressBook addressBook);
 }
