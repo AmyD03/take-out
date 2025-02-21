@@ -70,4 +70,16 @@ public class AddressBookController {
         addressBookService.update(addressBook);
         return Result.success();
     }
+
+    /**
+     * 根据id删除地址
+     * @param id
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("根据id删除地址")
+    public Result deleteById(Long id) {
+        addressBookService.deleteById(id);
+        return Result.success();
+    }
 }

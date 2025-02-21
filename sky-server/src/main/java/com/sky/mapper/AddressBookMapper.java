@@ -38,4 +38,11 @@ public interface AddressBookMapper {
      * @param addressBook
      */
     void update(AddressBook addressBook);
+
+    /**
+     * 根据id删除地址
+     * @param id
+     */
+    @Delete("delete from address_book where id = #{id}")
+    void deleteById(Long id);
 }
