@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 public class ReportServiceImpl implements ReportService {
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private UserMapper userMapper;
     /**
      * 营业额数据统计
      * @return
@@ -45,6 +47,7 @@ public class ReportServiceImpl implements ReportService {
             begin = begin.plusDays(1);
             dateList.add(begin);
         }
+
         List<Double> turnoverList = new ArrayList<>();
         for (LocalDate date : dateList) {
             //查询date日期对应的营业额数据，营业额指的状态为已完成的订单的金额合计
@@ -66,6 +69,49 @@ public class ReportServiceImpl implements ReportService {
                 .builder()
                 .dateList(StringUtils.join(dateList, ",")) //将datelist集合中的每个元素拼接成字符串，用逗号分割
                 .turnoverList(StringUtils.join(turnoverList, ","))
+                .build();
+    }
+
+    /**
+     * 用户统计
+     * @param begin
+     * @param end
+     * @return
+     */
+    public UserReportVO getUserStatistics(LocalDate begin, LocalDate end){
+        //当前集合用于存放开始到结束的每一天的日期
+        List<LocalDate> dateList = new ArrayList<>();
+        dateList.add(begin);
+        while(!begin.equals(end)){
+            //计算指定日期的后一天对应的日期
+            begin = begin.plusDays(1);
+            dateList.add(begin);
+        }
+
+        //存放每天的总用户数量
+        List<Integer> totalUserList = new ArrayList<>();
+        //存放每天的新增用户数量
+        List<Integer> newUserList = new ArrayList<>();
+        //写一个动态SQL兼容两种SQL即可
+        for (LocalDate date : dateList) {
+            LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
+            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
+            Map map = new HashMap();
+            //总用户数量
+            map.put("end", endTime); //只putend时候之加入了日期小于end的条件
+            Integer totalUser = userMapper.countByMap(map);
+            //新增用户数量
+            map.put("begin", beginTime);
+            Integer newUser = userMapper.countByMap(map);
+
+            totalUserList.add(totalUser);
+            newUserList.add(newUser);
+        }
+
+        return UserReportVO.builder()
+                .dateList(StringUtils.join(dateList,","))
+                .newUserList(StringUtils.join(newUserList,","))
+                .totalUserList(StringUtils.join(totalUserList,","))
                 .build();
     }
 }
